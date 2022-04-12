@@ -1,0 +1,17 @@
+server:
+  port: 8080
+  shutdown: graceful
+  error:
+    include-message: always
+spring:
+  lifecycle:
+    timeout-per-shutdown-phase: ${GRACEFUL_PERIOD_SECONDS:2}s
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: validate
+  datasource:
+    url: ${DB_CONNECT:jdbc:postgresql://localhost:5432}/${DB_NAME:iteco}
+    username: ${DB_USER:postgres}
+    password: ${DB_PASSWORD:admin}
+
