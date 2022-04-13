@@ -32,9 +32,12 @@ public class BonusPointsService {
     @Transactional
     public long updatePoints(BigInteger cardNumber, double checkSum, List<Double> positions) {
         try {
+            double positionSum = positions.stream().mapToDouble(i -> i).sum();
+            checkVerification(checkSum, positionSum, positions);
             clientVerification(cardNumber);
+
             Client client = clientRepo.getClientWithLock(cardNumber);
-            withdrawPoints(checkSum, positions, client);
+            withdrawPoints(checkSum, positionSum, client);
             scorePoints(cardNumber, checkSum, client);
             clientRepo.save(client);
             saveCheck(checkSum, positions, cardNumber);
@@ -57,8 +60,12 @@ public class BonusPointsService {
         }
     }
 
-    private void withdrawPoints(double checkSum, List<Double> positions, Client client) {
-        double positionSum = positions.stream().mapToDouble(i -> i).sum();
+    private void checkVerification(double checkSum, double positionSum, List<Double> positions) {
+        if (checkSum == 0 && positionSum == 0) throw new PointsOperationException("Нулевая сумма в позициях и в чеке");
+        if (positions.stream().anyMatch(p->p<0)) throw new PointsOperationException("Некорректная сумма позиции");
+    }
+
+    private void withdrawPoints(double checkSum, double positionSum, Client client) {
         if (positionSum < checkSum) throw new PointsOperationException("Сумма чека больше суммы позиций!");
         long currentPoints = client.getPointsSum() - Math.round((positionSum - checkSum) * 0.1);
         if (currentPoints < 0) throw new PointsOperationException("Недостаточно баллов для списания!");
