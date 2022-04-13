@@ -18,4 +18,6 @@ public interface ClientRepository extends JpaRepository<Client, BigDecimal> {
     @Query(value = "select e.* from clients e where e.card_number = :cardNum for update", nativeQuery = true)
     Client getClientWithLock(@Param("cardNum") BigInteger cardNum);
 
+    @Query(value = "select e.* from clients e where e.card_number = :cardNum", nativeQuery = true)
+    Client getClientByCardNumber(@Param("cardNum")BigInteger cardNumber);
 }

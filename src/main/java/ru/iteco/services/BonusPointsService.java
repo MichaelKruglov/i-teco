@@ -32,15 +32,28 @@ public class BonusPointsService {
     @Transactional
     public long updatePoints(BigInteger cardNumber, double checkSum, List<Double> positions) {
         try {
+            clientVerification(cardNumber);
             Client client = clientRepo.getClientWithLock(cardNumber);
             withdrawPoints(checkSum, positions, client);
             scorePoints(cardNumber, checkSum, client);
             clientRepo.save(client);
-            saveCheck(checkSum,  positions, cardNumber);
+            saveCheck(checkSum, positions, cardNumber);
             return client.getPointsSum();
         } catch (Exception e) {
             log.error("Произошла ошибка во время снятия баллов", e);
             throw e;
+        }
+    }
+
+    private void clientVerification(BigInteger cardNumber) {
+        if (cardNumber == null || cardNumber.toString().length() != 20)
+            throw new PointsOperationException("Неверный формат номера карты");
+        var optionalClient = clientRepo.getClientByCardNumber(cardNumber);
+        if (optionalClient == null) {
+            Client client = new Client();
+            client.setCardNumber(cardNumber);
+            client.setPointsSum(0);
+            clientRepo.save(client);
         }
     }
 
@@ -63,7 +76,7 @@ public class BonusPointsService {
 
     private void saveCheck(double checkSum, List<Double> positions, BigInteger cardNumber) {
         Check savedCheck = checkRepo.save(makeCheck(checkSum, cardNumber));
-        positions.forEach(p->positionRepo.save(makePosition(p, savedCheck.getId())));
+        positions.forEach(p -> positionRepo.save(makePosition(p, savedCheck.getId())));
     }
 
     private Check makeCheck(double checkSum, BigInteger cardNumber) {
@@ -79,5 +92,4 @@ public class BonusPointsService {
                 .positionSum(positionSum)
                 .build();
     }
-
 }
