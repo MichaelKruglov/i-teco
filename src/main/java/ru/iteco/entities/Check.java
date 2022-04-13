@@ -1,5 +1,6 @@
 package ru.iteco.entities;
 
+import lombok.Builder;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -10,6 +11,7 @@ import java.util.UUID;
 @Data
 @Entity
 @Table(name = "checks")
+@Builder
 public class Check {
 
     @Id
