@@ -11,7 +11,7 @@ spring:
     hibernate:
       ddl-auto: validate
   datasource:
-    url: ${DB_CONNECT:jdbc:postgresql://localhost:5432}/${DB_NAME:iteco2}
+    url: ${DB_CONNECT:jdbc:postgresql://host.docker.internal:5432}/${DB_NAME:iteco3}
     username: ${DB_USER:postgres}
     password: ${DB_PASSWORD:admin}
 
