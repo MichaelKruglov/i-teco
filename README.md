@@ -14,6 +14,7 @@ gradle bootRun
 ```
 #### Сборка в docker:
 ```
+gradle clean build
 docker build -t i-teco .
 docker run -d -p 8080:8080 -t i-teco
 ```
