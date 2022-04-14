@@ -25,7 +25,7 @@ public class BonusPointsService {
     private final CheckRepository checkRepo;
     private final ClientRepository clientRepo;
 
-    public long getPointsOfClient(BigInteger cardNumber) {
+    public Long getPointsOfClient(BigInteger cardNumber) {
         return clientRepo.getCurrentPointsByCardNum(cardNumber);
     }
 

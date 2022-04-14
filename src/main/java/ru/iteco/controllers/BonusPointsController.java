@@ -34,7 +34,7 @@ public class BonusPointsController {
             @ApiResponse(code = 500, message = "Server error"),
             @ApiResponse(code = 200, message = "Successful")})
     @GetMapping(value = "/{cardNumber}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public long getBonusPoints(@PathVariable("cardNumber") BigInteger cardNumber) {
+    public Long getBonusPoints(@PathVariable("cardNumber") BigInteger cardNumber) {
         return service.getPointsOfClient(cardNumber);
     }
 

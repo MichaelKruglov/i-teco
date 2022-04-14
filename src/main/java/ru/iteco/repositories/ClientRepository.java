@@ -13,7 +13,7 @@ import java.math.BigInteger;
 public interface ClientRepository extends JpaRepository<Client, BigDecimal> {
 
     @Query("select e.pointsSum from Client e where e.cardNumber = :cardNum")
-    long getCurrentPointsByCardNum(@Param("cardNum") BigInteger cardNum);
+    Long getCurrentPointsByCardNum(@Param("cardNum") BigInteger cardNum);
 
     @Query(value = "select e.* from clients e where e.card_number = :cardNum for update", nativeQuery = true)
     Client getClientWithLock(@Param("cardNum") BigInteger cardNum);

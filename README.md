@@ -13,7 +13,7 @@ gradle clean build
 ```
 gradle bootRun
 ```
-#### Сборка в docker:
+#### Сборка в docker: 
 ```
 gradle clean build
 docker build -t i-teco .
