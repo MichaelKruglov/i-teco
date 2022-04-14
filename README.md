@@ -28,5 +28,5 @@ docker run -d -p 8080:8080 -t i-teco
 * PostgreSQL
 * Flyway
 #### Методы в Rest контроллере http://localhost:8080/swagger-ui.html#/:
-* withdrawPoints - накопление и снятие баллов.
+* updatePoints - накопление и снятие баллов.
 * getBonusPoints - получение баллов по номеру карты.
